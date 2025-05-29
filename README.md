@@ -95,4 +95,4 @@ FROM CSVREAD('C:/path/to/products.csv');
 ---
 
 **Author:**  
-[Your Name or GitHub Username]
+Harninder Singh
