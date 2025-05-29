@@ -1,7 +1,8 @@
-# Springpp - Simple Spring Boot Product CRUD (In-Memory)
+# Springpp - Spring Boot Product CRUD with DAO Layer and H2 Database
 
-This is a simple Spring Boot application demonstrating a Product CRUD API using the MVC architecture.  
-**No database is required**—the app uses an in-memory list with some dummy products for demonstration and testing.
+This is a Spring Boot application demonstrating a Product CRUD API using the MVC architecture, a dedicated DAO layer, and an H2 in-memory database.
+
+---
 
 ## Folder Structure
 
@@ -10,14 +11,19 @@ src/main/java/com/techbros/springpp/
 │
 ├── controller/
 │     └── ProductController.java
+├── dao/
+│     ├── ProductDao.java
+│     └── ProductDaoImpl.java
 ├── model/
 │     └── Product.java
 ├── repository/
-│     └── (not used in in-memory mode)
+│     └── ProductRepository.java
 ├── service/
 │     └── ProductService.java
 └── SpringppApplication.java
 ```
+
+---
 
 ## Features
 
@@ -26,7 +32,10 @@ src/main/java/com/techbros/springpp/
 - Create a new product (`POST /products`)
 - Update a product (`PUT /products/{id}`)
 - Delete a product (`DELETE /products/{id}`)
-- Returns some dummy products on startup
+- Uses H2 in-memory database for persistence
+- DAO layer abstracts database operations using Spring Data JPA
+
+---
 
 ## How to Run
 
@@ -43,25 +52,47 @@ src/main/java/com/techbros/springpp/
    - `PUT     /products/{id}`  
    - `DELETE  /products/{id}`  
 
-## Example Dummy Products
+---
 
-- Laptop
-- Phone
-- Headphones
+## H2 Database Console
 
-## Notes
+- Access at: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+- **JDBC URL:** `jdbc:h2:mem:testdb`
+- **Username:** `sa`
+- **Password:** *(leave blank)*
 
-- All data is lost when the app restarts (in-memory only).
-- No database configuration is needed.
-- For a persistent version, implement the repository layer and connect to a database.
+---
+
+## CSV Import
+
+You can import CSV data into the H2 database using the H2 console and the `CSVREAD` function.  
+Example:
+```sql
+INSERT INTO product (product_name, product_price, product_description, product_quantity)
+SELECT "PRODUCT_NAME", "PRODUCT_PRICE", "PRODUCT_DESCRIPTION", "PRODUCT_QUANTITY"
+FROM CSVREAD('C:/path/to/products.csv');
+```
+
+---
 
 ## Requirements
 
 - Java 17+ (or compatible version)
-- Maven or Gradle (for dependency management)
+- Maven or Gradle
 - Spring Boot
 
 ---
 
+## Recent Changes
+
+- **Added DAO Layer:**  
+  - `dao/ProductDao.java` (interface)
+  - `dao/ProductDaoImpl.java` (implementation)
+- **Service Layer** now delegates all database operations to the DAO.
+- **Persistence** is handled by H2 in-memory database via Spring Data JPA.
+- **Project structure** updated for better separation of concerns.
+
+---
+
 **Author:**  
-Harninder Singh
+[Your Name or GitHub Username]
