@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techbros.springpp.dao.ProductDao;
+import com.techbros.springpp.exception.ProductNotFoundException;
 import com.techbros.springpp.model.Product;
 
 @Service
@@ -28,8 +29,12 @@ public class ProductService {
     }
 
     public Product getProductById(Long id) {
-        return productDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        Product product = productDao.findById(id)
+                .orElse(null);
+        if (product == null) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        return product;
     }
 
     @Transactional
