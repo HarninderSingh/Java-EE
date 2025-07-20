@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<?> createProduct(@Valid @RequestBody Product product) {
         try {
             Product created = productService.createProduct(product);
@@ -39,11 +41,13 @@ public class ProductController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         try {
             Product product = productService.getProductById(id);
@@ -54,6 +58,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product) {
         try {
             Product updated = productService.updateProduct(id, product);
@@ -64,6 +69,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
